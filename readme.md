@@ -8,3 +8,7 @@ The experiment consisted of three sessions, each block consisted of 24 trials. E
 The length of sequence were 7.
 
 The rule for choosing sequences (all trials), was not having runs of three digits (e.g. 123 or 321) and not having repetitions of digits (e.g. 22). Each sequence should have all the digits (numbers 1 to 5) atleast once.
+
+
+In another follow-up session (session 4), we randomly changed only one digit (3rd, 4th, or 5th press) in some trials in the memory + sensory condition. The proportial of changed trials to unchanged trials in this conditions was 1:2 (1/3 of them were changed). We wanted to know if we again see integration if there is uncertainty in the condition.
+ 
