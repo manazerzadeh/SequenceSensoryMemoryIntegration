@@ -171,4 +171,20 @@ def seq_condition(row: pd.Series):
         return 'M+S (changed)'
     else:
         return 'M+S'
+    
+
+def remove_remaining_next_error_presses(subj_press: pd.DataFrame) -> pd.DataFrame:
+    error_rows = subj_press[subj_press['isPressError'] == 1]
+
+    # Find the max N for each group where isPressError is 1
+    max_n_for_error = error_rows.groupby(['BN','TN','SubNum'])['N'].min().reset_index()
+
+
+    # Merge this information back to the original df to find the max N for each group in the original df
+    press_with_max_n = subj_press.merge(max_n_for_error, on=['BN', 'TN', 'SubNum'], how='left', suffixes=('', '_max')).fillna(np.inf)
+
+    # Filter out rows where N is more than the max N in the error rows
+    press_filtered = press_with_max_n[press_with_max_n['N'] <= press_with_max_n['N_max']].drop(columns=['N_max'])
+
+    return press_filtered
 
