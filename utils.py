@@ -29,6 +29,14 @@ execTime = 10000 # msecs for each trial maximum
 precueTime_interval = [600, 1000] # msecs for planning before movement 
 hand = 2 #left or right hand
 
+num_blocks_per_session = 12
+num_trials_per_block = 24
+num_trails_per_cond = 8
+
+session1_blocks = [_ for _ in range(1, num_blocks_per_session+1)]
+session2_blocks = [_ for _ in range(num_blocks_per_session+1, 2*num_blocks_per_session+1)]
+session3_blocks = [_ for _ in range(2*num_blocks_per_session+1, 3*num_blocks_per_session+1)]
+
 def read_dat_file(path : str):
     column_names = pd.read_csv(path, delimiter='\t', usecols=lambda column: not column.startswith("Unnamed")).columns
     dtype_dict = {col: int for col in column_names}
@@ -80,6 +88,19 @@ def add_IPI(subj: pd.DataFrame):
         subj[new_col] = subj[col2] - subj[col1]
 
     # subj['IPI0'] = subj['RT']
+
+def add_day(row: pd.Series) -> int:
+    """
+    Adds a day column to the dataframe based on the block number.
+    """
+    if row['BN'] in session1_blocks:
+        return 1
+    elif row['BN'] in session2_blocks:
+        return 2
+    elif row['BN'] in session3_blocks:
+        return 3
+    else:
+        raise ValueError("Block number not recognized")
 
 
 
@@ -163,4 +184,6 @@ def seq_condition(row: pd.Series):
         return 'M'
     else:
         return 'M+S'
+    
+
 

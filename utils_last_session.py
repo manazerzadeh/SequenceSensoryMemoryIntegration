@@ -29,6 +29,7 @@ iti = 3000   #Inter trial interval
 execTime = 10000 # msecs for each trial maximum
 precueTime_interval = [600, 1000] # msecs for planning before movement 
 hand = 2 #left or right hand
+excluded_block_n = 37 #The first block is excluded from the analysis, because it is a warmup block
 
 def read_dat_file(path : str):
     column_names = pd.read_csv(path, delimiter='\t', usecols=lambda column: not column.startswith("Unnamed")).columns
@@ -66,6 +67,13 @@ def remove_error_trials_presses(subj_press: pd.DataFrame) -> pd.DataFrame:
 def remove_error_presses(subj_press: pd.DataFrame) -> pd.DataFrame:
 
     return subj_press[(subj_press['isPressError']) == 0]
+
+def remove_first_block(subj: pd.DataFrame) -> pd.DataFrame:
+    """
+    Removes the first block of the subject's dataframe
+    """
+
+    return subj[subj['BN'] != excluded_block_n]
 
 
 
